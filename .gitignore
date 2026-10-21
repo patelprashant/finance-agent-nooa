@@ -1,0 +1,13 @@
+# Secrets — never commit your real key
+.env
+
+# Python / uv
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# NOOA trace journals (created when you run with the trace viewer)
+.nooa/
+*.journal
