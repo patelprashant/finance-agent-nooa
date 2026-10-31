@@ -3,10 +3,11 @@ name = "finance-agent"
 version = "0.1.0"
 description = "Learn NVIDIA-labs Object Oriented Agents (NOOA) by building a Smart Expense Categorizer that grows into a Personal Finance Assistant."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12,<3.14"
 dependencies = [
     "nooa",
     "python-dotenv",
+    "mcp",
 ]
 
 [build-system]

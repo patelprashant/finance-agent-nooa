@@ -85,8 +85,7 @@ async def main() -> None:
 
     for line in examples:
         result = await agent.categorize(line)
-        print(f"
-Input:  {line}")
+        print(f"\nInput:  {line}")
         print(f"  -> {result.category:<13} ${result.amount:<8} | {result.merchant}")
         print(f"     business={result.is_business}  tax_deductible={result.tax_deductible}")
         print(f"     note: {result.note}")

@@ -120,8 +120,7 @@ async def main() -> None:
     ]
 
     for q in questions:
-        print(f"
-Q: {q}")
+        print(f"\nQ: {q}")
         reply = await agent.answer(q)
         print(f"A: {reply}")
 

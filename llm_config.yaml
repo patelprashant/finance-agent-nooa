@@ -1,0 +1,25 @@
+# NOOA model registry — maps a local alias to a concrete provider route.
+#
+# This file is a thin layer over LiteLLM. We define ONE alias, "finance-llm",
+# that points at OpenRouter using its OpenAI-compatible Chat Completions API.
+#
+# How NOOA finds this file: we point the env var NEMO_OO_LLM_CONFIG at it
+# (see .env / run commands in the README). Then `get_llm_client("finance-llm")`
+# resolves the alias below.
+#
+# Swap models later by changing ONLY the `model_name` line, e.g.:
+#   model_name: openai/google/gemini-2.0-flash-001
+#   model_name: openai/anthropic/claude-3.5-haiku
+# Keep the leading `openai/` — it selects LiteLLM's OpenAI-compatible transport
+# (the part sent to OpenRouter is everything AFTER that first `openai/`).
+
+models:
+  finance-llm:
+    # `openai/` = use OpenAI-compatible wire format.
+    # `openai/gpt-4o-mini` after it = the exact model ID OpenRouter expects.
+    model_name: openai/nvidia/nemotron-3.5-super-vl:free
+    client_type: completion
+    api_base: https://openrouter.ai/api/v1
+    api_key_env: OPENROUTER_API_KEY
+    temperature: 0.0        # deterministic-ish: good for consistent categorization
+    max_tokens: 2048
