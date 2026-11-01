@@ -18,3 +18,6 @@ __pycache__/
 
 # Blog/doc drafts — kept on disk, not tracked
 /docs/
+
+# Kiro specs/hooks/settings — kept on disk, not tracked
+/.kiro/
