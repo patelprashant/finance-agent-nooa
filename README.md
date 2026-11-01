@@ -13,6 +13,13 @@ Requires Python >=3.12,<3.14 (pinned to match the `nooa` dependency).
     uv run python -m finance_agent.phase1_categorizer
     uv run python -m finance_agent.phase2_assistant
 
+## Web UI
+    uv run streamlit run src/finance_agent/webapp.py
+
+Load the sample data or upload a CSV, view the categorized table, and ask
+questions. Needs your OpenRouter key in `.env` for categorizing blank rows and
+asking questions.
+
 ## Swap models
 Edit the `model_name:` line in llm_config.yaml (keep the leading `openai/`).
 The part after `openai/` is the OpenRouter model slug, e.g.

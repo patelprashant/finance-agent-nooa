@@ -8,6 +8,7 @@ dependencies = [
     "nooa",
     "python-dotenv",
     "mcp",
+    "streamlit>=1.40,<2",
 ]
 
 [dependency-groups]
