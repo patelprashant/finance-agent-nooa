@@ -30,38 +30,14 @@ Run it (from the repo root, after setting up .env):
 from __future__ import annotations
 
 import asyncio
-from dataclasses import dataclass
 
 from nooa import Agent, strategy
 from nooa.config import CodeActConfig
 from nooa.strategies import CodeActStrategy
 
 from finance_agent.llm import llm
-from finance_agent.phase1_categorizer import Category
-
-@dataclass
-class Transaction:
-    """One categorized transaction. (In a real app, Phase 1 would produce these.)"""
-
-    date: str  # ISO date, e.g. "2026-09-14"
-    merchant: str
-    amount: float  # positive = money spent; income is handled via category
-    category: Category
-    tax_deductible: bool = False
-
-# A tiny sample ledger so the demo runs with zero setup. Swap in your own data,
-# or generate it by running each line through the Phase 1 categorizer.
-SAMPLE_LEDGER: list[Transaction] = [
-    Transaction("2026-09-02", "Costco", 86.10, "groceries"),
-    Transaction("2026-09-05", "Uber", 42.00, "transport", tax_deductible=True),
-    Transaction("2026-09-08", "Nobu", 230.00, "dining", tax_deductible=True),
-    Transaction("2026-09-11", "Spotify", 11.99, "entertainment"),
-    Transaction("2026-09-14", "Whole Foods", 54.30, "groceries"),
-    Transaction("2026-09-18", "Delta Airlines", 410.00, "travel", tax_deductible=True),
-    Transaction("2026-09-21", "AMC Theatres", 32.50, "entertainment"),
-    Transaction("2026-09-24", "Shell", 61.20, "transport"),
-    Transaction("2026-09-28", "Chipotle", 18.75, "dining"),
-]
+from finance_agent.models import Transaction
+from finance_agent.pipeline import load_and_categorize
 
 class FinanceAssistant(Agent, llm=llm):
     """You are a personal finance assistant.
@@ -76,26 +52,44 @@ class FinanceAssistant(Agent, llm=llm):
         super().__init__()
         # Private application state. The model reaches it only through the
         # typed tool methods below — not by reading this attribute directly.
-        self._transactions: list[Transaction] = transactions or list(SAMPLE_LEDGER)
+        self._transactions: list[Transaction] = transactions or []
 
     # ---- Deterministic tools (plain Python the LLM may call) ---------------
 
     def list_transactions(self) -> list[dict]:
-        """Return every transaction as a list of dicts (date, merchant, amount, category)."""
-        return [t.__dict__ for t in self._transactions]
+        """Return every transaction as a list of dicts (date, description, amount, category, sub_category)."""
+        return [
+            {
+                "date": t.date,
+                "description": t.description,
+                "amount": t.amount,
+                "category": t.category,
+                "sub_category": t.sub_category,
+            }
+            for t in self._transactions
+        ]
 
     def total_spent(self) -> float:
         """Return the grand total spent across all non-income transactions."""
-        return round(sum(t.amount for t in self._transactions if t.category != "income"), 2)
+        return round(sum(t.amount for t in self._transactions if not t.is_income), 2)
 
     def total_by_category(self, category: str) -> float:
         """Return the total amount spent in a single category (e.g. 'dining')."""
-        return round(sum(t.amount for t in self._transactions if t.category == category), 2)
+        return round(
+            sum(
+                t.amount
+                for t in self._transactions
+                if not t.is_income and t.category == category
+            ),
+            2,
+        )
 
     def spending_breakdown(self) -> dict[str, float]:
-        """Return a {category: total} map across all transactions."""
+        """Return a {category: total} map across all spend (non-income) transactions."""
         out: dict[str, float] = {}
         for t in self._transactions:
+            if t.is_income:
+                continue
             out[t.category] = round(out.get(t.category, 0.0) + t.amount, 2)
         return out
 
@@ -111,7 +105,10 @@ class FinanceAssistant(Agent, llm=llm):
         ...
 
 async def main() -> None:
-    agent = FinanceAssistant()
+    from finance_agent.csv_loader import default_csv_path
+
+    transactions = await load_and_categorize(default_csv_path())
+    agent = FinanceAssistant(transactions)
 
     questions = [
         "How much did I spend in total, and in which category did I spend the most?",

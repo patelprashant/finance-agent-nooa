@@ -47,6 +47,10 @@ class ExpenseAnalysis(BaseModel):
     """
 
     category: Category = Field(description="The single best-fit category for this expense.")
+    sub_category: str = Field(
+        description="A short, specific sub-category within the category "
+        "(e.g. 'coffee' under 'dining'); '' if none is obvious."
+    )
     amount: float = Field(description="The monetary amount, as a positive number.")
     merchant: str = Field(description="The merchant or payee, if identifiable; else 'unknown'.")
     is_business: bool = Field(description="True if this looks like a business/work expense.")

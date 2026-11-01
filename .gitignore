@@ -8,8 +8,10 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 
+# On-disk categorization cache
+.cache/
+# Workflow/agent build artifacts (reviews, task notes)
+.agents/
 # NOOA trace journals (created when you run with the trace viewer)
 .nooa/
 *.journal
-
-/docs/*

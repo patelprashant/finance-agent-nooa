@@ -1,0 +1,13 @@
+Date,Description,Debit,Credit,Balance,Category,SubCategory
+2026-09-01,Monthly salary deposit,,4200.00,4200.00,income,salary
+2026-09-02,Costco,86.10,,4113.90,groceries,bulk
+2026-09-05,Uber to airport for conference,42.00,,4071.90,transport,rideshare
+2026-09-08,Client dinner at Nobu,230.00,,3841.90,dining,business meal
+2026-09-11,Spotify subscription,11.99,,3829.91,entertainment,streaming
+2026-09-14,Whole Foods,54.30,,3775.61,,
+2026-09-18,Delta Airlines flight,410.00,,3365.61,,
+2026-09-21,AMC Theatres,32.50,,3333.11,entertainment,movies
+2026-09-24,Shell fuel,61.20,,3271.91,,
+2026-09-26,Refund from online store,,24.99,3296.90,income,refund
+2026-09-28,Chipotle,18.75,,3278.15,,
+2026-09-30,Pharmacy prescription,27.40,,3250.75,health,pharmacy
