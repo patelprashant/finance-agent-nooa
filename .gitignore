@@ -11,3 +11,5 @@ __pycache__/
 # NOOA trace journals (created when you run with the trace viewer)
 .nooa/
 *.journal
+
+/docs/*

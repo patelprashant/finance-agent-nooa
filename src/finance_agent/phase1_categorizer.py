@@ -76,7 +76,7 @@ async def main() -> None:
     agent = ExpenseCategorizer()
 
     examples = [
-        "Uber to airport $42",
+        "Uber to airport $42 to attend conference",
         "Costco groceries 86.10",
         "Monthly Spotify subscription 11.99",
         "Client dinner at Nobu $230 (took the Acme team out)",
