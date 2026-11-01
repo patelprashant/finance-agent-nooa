@@ -27,6 +27,13 @@ import tempfile
 from pathlib import Path
 
 import streamlit as st
+from dotenv import load_dotenv
+
+# Load .env here so the key check below sees OPENROUTER_API_KEY. We can't rely on
+# finance_agent.llm to do it: that module loads .env at import, but we defer the
+# LLM imports into the handlers (see below), so without this the top-level key
+# check would run before .env was ever read.
+load_dotenv()
 
 # Only the lightweight, key-free modules are imported at module load time. The
 # pipeline and the assistant pull in the LLM wiring, so they are imported lazily
