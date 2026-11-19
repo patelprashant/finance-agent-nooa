@@ -420,6 +420,7 @@ class TransactionRowView:
     amount: Decimal
     direction: TransactionDirection
     classification: EffectiveClassification
+    account_name: str
     provenance: SourceProvenance
     inclusion_status: InclusionStatus
     exclusion_reason: str | None = None

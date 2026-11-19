@@ -1,5 +1,10 @@
 """Public exports for the typed financial-insights domain model."""
 
+from finance_agent.domain.provenance import (
+    build_transaction_rows,
+    dashboard_transaction_rows,
+    select_transaction_row,
+)
 from finance_agent.domain.types import (
     AccountId,
     AccountMetadata,
@@ -128,4 +133,7 @@ __all__ = [
     "UploadedStatement",
     "ValidationCode",
     "ValidationIssue",
+    "build_transaction_rows",
+    "dashboard_transaction_rows",
+    "select_transaction_row",
 ]
